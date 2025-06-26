@@ -1,3 +1,4 @@
-1 - Erro: Parênteses desbalanceados.
-1 - Resultado: 1
+1 - Erro: Parênteses desbalanceados ao final da expressão!
+1 - Erro: Parênteses desbalanceados ao final da expressão!
+1 - Erro: Expressão mal formada.
 2 - Resultado: 3
