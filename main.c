@@ -55,10 +55,14 @@ int main()
         infixaParaPosfixa(&filaTokens, &filaPosfixa);
 
         // Mostrar posfixa (opcional)
-        printf("\nExpressão Posfixa:\n");
+        
+        //printf("\nExpressão Posfixa:\n");
+        
         while (!vaziaFila(&filaPosfixa)) {
             Token tk = frente(&filaPosfixa);
-            printf("%c ", tk.value);
+            
+            //printf("%c ", tk.value);
+            
             inserir(&copiaPosfixa, tk);
             remover(&filaPosfixa);
         }
