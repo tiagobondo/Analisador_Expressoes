@@ -39,10 +39,11 @@ int main()
         return 1;
     }
 
-    int contador = 1; //Contador para mostrar as linhas no arquivo
+    int contador = 0; //Contador para mostrar as linhas no arquivo
     
     // Processamento de cada linha (expressão)
     while (fgets(expressao, MAX, entrada)) {
+                 contador++; //Incrementação
         // Inicializa filas a cada iteração
         initFila(&filaTokens);
         initFila(&filaPosfixa);
@@ -80,8 +81,6 @@ int main()
         } else {
           fprintf(saida,"%d - Resultado: %d\n", contador, resultado);
         }
-        
-        contador++;
     }
 
     // Fechar arquivos
