@@ -2,7 +2,7 @@
 
 // Protótipos das funções
 void tokenizar(char *expr, Fila *fila);
-void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida);
+void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida, int contador);
 int avaliarPosfixa(Fila *posfixa, FILE *saida, int contador);
 
 // Função principal
@@ -52,7 +52,7 @@ int main()
         tokenizar(expressao, &filaTokens);
 
         // Converter infixa para posfixa
-        infixaParaPosfixa(&filaTokens, &filaPosfixa, saida);
+        infixaParaPosfixa(&filaTokens, &filaPosfixa, saida, contador);
 
         // Mostrar posfixa (opcional)
         //printf("\nExpressão Posfixa:\n");
@@ -130,7 +130,7 @@ void tokenizar(char *expr, Fila *fila) {
 }
 
 // Função para converter de infixa para posfixa
-void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida) {
+void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida, int contador) {
     Pilha operadores;
     Token tk, aux;
     initPilha(&operadores);
@@ -162,7 +162,8 @@ void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida) {
             if (!vaziaPilha(&operadores) && top(&operadores).value == '(') {
                 pop(&operadores);
             } else {
-                printf("Erro: Parênteses desbalanceados.\n");
+                   fprintf(saida, "%d - Erro: Parênteses desbalanceados.\n", contador);
+                   //printf("Erro: Parênteses desbalanceados.\n");
                 //return;
             }
         }
