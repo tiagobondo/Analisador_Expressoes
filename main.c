@@ -2,8 +2,8 @@
 
 // Protótipos das funções
 void tokenizar(char *expr, Fila *fila);
-void infixaParaPosfixa(Fila *infixa, Fila *posfixa);
-int avaliarPosfixa(Fila *posfixa);
+void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida);
+int avaliarPosfixa(Fila *posfixa, FILE *saida, int contador);
 
 // Função principal
 int main()
@@ -52,30 +52,25 @@ int main()
         tokenizar(expressao, &filaTokens);
 
         // Converter infixa para posfixa
-        infixaParaPosfixa(&filaTokens, &filaPosfixa);
+        infixaParaPosfixa(&filaTokens, &filaPosfixa, saida);
 
         // Mostrar posfixa (opcional)
-        
         //printf("\nExpressão Posfixa:\n");
-        
         while (!vaziaFila(&filaPosfixa)) {
             Token tk = frente(&filaPosfixa);
-            
             //printf("%c ", tk.value);
-            
             inserir(&copiaPosfixa, tk);
             remover(&filaPosfixa);
         }
-        printf("\n");
 
         // Avaliar a expressão posfixa
-        int resultado = avaliarPosfixa(&copiaPosfixa);
+        int resultado = avaliarPosfixa(&copiaPosfixa, saida, contador);
 
         // Gravar resultado no arquivo
         if (resultado != INT_MAX) {
-            fprintf(saida, "%d - Resultado: %d\n", contador, resultado);
+            fprintf(saida,"%d - Resultado: %d\n", contador, resultado);
         } else {
-            fprintf(saida, "%d - Expressão inválida.\n", contador);
+            //fprintf(saida, "%d - Expressão inválida.\n", contador);
         }
         contador++;
     }
@@ -135,7 +130,7 @@ void tokenizar(char *expr, Fila *fila) {
 }
 
 // Função para converter de infixa para posfixa
-void infixaParaPosfixa(Fila *infixa, Fila *posfixa) {
+void infixaParaPosfixa(Fila *infixa, Fila *posfixa, FILE *saida) {
     Pilha operadores;
     Token tk, aux;
     initPilha(&operadores);
@@ -168,7 +163,7 @@ void infixaParaPosfixa(Fila *infixa, Fila *posfixa) {
                 pop(&operadores);
             } else {
                 printf("Erro: Parênteses desbalanceados.\n");
-                return;
+                //return;
             }
         }
         remover(infixa);
@@ -182,7 +177,7 @@ void infixaParaPosfixa(Fila *infixa, Fila *posfixa) {
 }
 
 // Função para avaliar expressão posfixa
-int avaliarPosfixa(Fila *posfixa) {
+int avaliarPosfixa(Fila *posfixa, FILE *saida, int contador) {
     Pilha_int valores;
     Token tk;
     int a, b, resultado;
@@ -200,16 +195,18 @@ int avaliarPosfixa(Fila *posfixa) {
                 b = top_int(&valores);
                 pop_int(&valores);
             } else {
-                printf("Erro: Expressão mal formada.\n");
-                return INT_MAX;
+                   fprintf(saida, "%d - Erro: Caracteres inválidos.\n", contador);
+                   //printf("%d - Erro: Expressão mal formada.\n", contador);
+                   return INT_MAX;
             }
 
             if (!vaziaPilhaInt(&valores)) {
                 a = top_int(&valores);
                 pop_int(&valores);
             } else {
-                printf("Erro: Expressão mal formada.\n");
-                return INT_MAX;
+                   fprintf(saida, "%d - Erro: Expressão mal formada.\n", contador);
+                   //printf("%d - Erro: Expressão mal formada.\n", contador);
+                   return INT_MAX;
             }
 
             switch (tk.value) {
@@ -219,14 +216,16 @@ int avaliarPosfixa(Fila *posfixa) {
                 case '^': resultado = pow(a, b); break;
                 case '/':
                     if (b == 0) {
-                        printf("Erro: Divisão por zero.\n");
-                        return INT_MAX;
+                    fprintf(saida, "%d - Erro: Divisão por zero.\n", contador);
+                    //printf("%d - Erro: Divisao por zero.\n", contador);
+                    return INT_MAX;
                     }
                     resultado = a / b;
                     break;
                 default:
-                    printf("Operador desconhecido: %c\n", tk.value);
-                    return INT_MAX;
+                        fprintf(saida, "%d - Operador desconhecido: %c\n", contador, tk.value);
+                        //printf("%d - Operador desconhecido: %c\n", contador, tk.value);
+                        return INT_MAX;
             }
 
             push_int(&valores, resultado);
@@ -239,13 +238,15 @@ int avaliarPosfixa(Fila *posfixa) {
         resultado = top_int(&valores);
         pop_int(&valores);
     } else {
-        printf("Erro: Pilha vazia no final.\n");
-        return INT_MAX;
+           fprintf(saida, "%d - Erro: Pilha vazia no final.\n", contador);
+           //printf("Erro: Pilha vazia no final.\n");
+           return INT_MAX;
     }
 
-    if (!vaziaPilhaInt(&valores)) {
-        printf("Erro: Elementos sobrando na pilha no final.\n");
-        return INT_MAX;
+if(!vaziaPilhaInt(&valores)){
+fprintf(saida, "%d - Erro: Desconhecido.\n", contador);
+//printf("Erro: Permitido apenas numeros com um digito.\n");
+return INT_MAX;
     }
 
     return resultado;

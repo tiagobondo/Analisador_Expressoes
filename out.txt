@@ -1,1 +1,13 @@
-1 - Expressão inválida.
+1 - Erro: Expressão mal formada.
+2 - Resultado: 3
+3 - Resultado: 1
+4 - Erro: Expressão mal formada.
+5 - Erro: Expressão mal formada.
+6 - Resultado: 0
+7 - Erro: Divisão por zero.
+8 - Erro: Desconhecido.
+9 - Erro: Caracteres inválidos.
+10 - Erro: Caracteres inválidos.
+11 - Erro: Pilha vazia no final.
+12 - Erro: Caracteres inválidos.
+13 - Erro: Desconhecido.
